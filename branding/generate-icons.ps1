@@ -56,7 +56,9 @@ Save-Resized 180 180 (Join-Path $out "apple-touch-icon.png")
 Save-Resized 192 192 (Join-Path $out "icon-192.png")
 Save-Resized 512 512 (Join-Path $out "icon-512.png")
 
-# OG / Twitter card image (1200 x 630 — most common, used by FB / iMessage / Slack / Twitter)
-Save-Resized 1200 630 (Join-Path $out "og-image.png")
+# og-image.png is hand-designed and managed directly in public/.
+# Intentionally NOT regenerated here — drop a new version into public/ when
+# updating the share card. To match the icons, also copy that file over
+# branding/icon-source.png before re-running this script.
 
 $source.Dispose()
