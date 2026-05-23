@@ -1,0 +1,23 @@
+node_modules/
+dist/
+.env
+.env.*
+*.env
+*service-account*.json
+*-service-account.json
+firebase-adminsdk*.json
+secrets/
+
+# Raw media archive at repo root only — the served copies in public/nerve_blocks/
+# are intentionally tracked. (Leading slash anchors to root so this doesn't also
+# match public/nerve_blocks/ via case-insensitive matching on Windows.)
+/Nerve_Blocks/
+
+# Build/system noise
+.DS_Store
+Thumbs.db
+.firebase/
+*.log
+
+# Local IDE / tooling
+.claude/
