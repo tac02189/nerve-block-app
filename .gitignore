@@ -5,7 +5,7 @@ dist/
 *.env
 *service-account*.json
 *-service-account.json
-firebase-adminsdk*.json
+*firebase-adminsdk*.json
 secrets/
 
 # Raw media archive at repo root only — the served copies in public/nerve_blocks/
