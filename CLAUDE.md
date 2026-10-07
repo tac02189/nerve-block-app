@@ -1,7 +1,5 @@
 # Nerve Block App — Claude Instructions
 
-This file is read automatically by every Claude Code instance working on this project. Follow these patterns on all future work.
-
 ## Project Overview
 
 Mizzou EM Nerve Block Reference — a React + Vite + Tailwind single-page app for ED ultrasound-guided peripheral nerve blocks. Home grid of 13 blocks grouped by region (upper, lower, trunk) + a dedicated LAST page. Each block page includes a weight-based LA max-dose calculator.
@@ -36,7 +34,7 @@ To add a new block: append an entry to `BLOCKS` with the appropriate `region`, d
 
 ## Firebase Pattern
 
-Firebase is initialized in `firebase.js` at the project root. v1 has placeholder config — replace with real values after running `firebase init hosting` for the `mizzou-nerve-blocks` project. When adding services (Firestore, Analytics, Auth):
+Firebase is initialized in `firebase.js` at the project root with a placeholder config, on purpose: the app is Hosting-only (`mizzou-nerve-blocks`) and uses no Firebase SDK service. Fill the config from the console only when adding one (Firestore, Analytics, Auth):
 
 ```js
 import { getFirestore } from "firebase/firestore";
@@ -47,7 +45,7 @@ Then import into components from `./firebase.js`. Never re-initialize the app.
 
 ## Git & GitHub Workflow
 
-Repo: `https://github.com/tac02189/nerve-block-app` (not yet created at scaffold time)
+Repo: `https://github.com/tac02189/nerve-block-app`
 Branch: `master` (per global CLAUDE.md, commit directly to master for normal work)
 
 **Proactively commit and push at major milestones** — new feature, new block added, content correction, deploy, etc.
