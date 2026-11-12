@@ -30,7 +30,9 @@ To add a new block: append an entry to `BLOCKS` with the appropriate `region`, d
 
 ## Local anesthetic data
 
-`LA_AGENTS` reflects ASRA / NYSORA reference values. If you change mg/kg or caps, update the LAST page wording too if needed. Always use lean/ideal body weight for calculation guidance — the UI prompts for this in elderly/obese.
+`LA_AGENTS` reflects ASRA / NYSORA reference values. If you change mg/kg or caps, update the LAST page wording too if needed.
+
+Weight guidance lives in one string, `DOSING_WEIGHT_HINT` (actual body weight, or lean/ideal body weight if obese), shown under both the LA calculator and the LAST lipid calculator. Change it there, not per page. Do not tell users to dose a thin patient on ideal body weight: in a thin or frail patient ideal weight can exceed actual weight and overstate the ceiling. The LAST page follows the ASRA LAST checklist 2020 (v1.1), which names no weight basis and gives fixed lipid volumes over 70 kg.
 
 ## Firebase Pattern
 
