@@ -60,8 +60,17 @@ function blockCredits(block) {
 }
 
 // ─── Local anesthetic agents ────────────────────────────────────────────────
-// ASRA 2020 / NYSORA reference values. mg/kg uses lean/ideal body weight.
+// ASRA 2020 / NYSORA reference values. mg/kg uses DOSING_WEIGHT_HINT's rule.
 // Caps from package inserts; clinically most regional services use lower caps.
+
+// Two weight rules, deliberately different.
+// LA max-dose calculator: actual weight, or lean/ideal if obese. Never ideal in a thin patient,
+// whose ideal weight can exceed actual weight and overstate the ceiling.
+const DOSING_WEIGHT_HINT = "Actual body weight — or lean/ideal body weight if obese.";
+// LAST lipid calculator: ideal body weight, the owner's decision of 2026-11-15. The 2020 ASRA
+// LAST checklist names no weight basis; its 2017 version put ideal body weight on the infusion.
+const LIPID_WEIGHT_HINT = "Ideal body weight. It sets the doses, the 70-kg cutoff and the maximum.";
+
 const LA_AGENTS = [
   {
     id: "bupi-025",
@@ -307,20 +316,20 @@ const BLOCKS = [
     defaultAgent: "lido-1",
     typicalVolMl: 5,
     positioning: "Supine, arm abducted and supinated.",
-    probe: "Linear, mid-forearm on ulnar (volar) aspect — proximal to where nerve joins ulnar artery.",
+    probe: "Linear, mid-forearm on ulnar (volar) aspect.",
     landmarks: [
       "Ulnar nerve as honeycomb structure",
-      "Block PROXIMAL to where ulnar nerve joins ulnar artery (mid-forearm) to avoid vascular puncture",
+      "Ulnar artery right beside the nerve, on its radial side, from mid-forearm to wrist — confirm with color Doppler",
       "FCU (flexor carpi ulnaris) as superficial landmark",
     ],
     technique: [
-      "Identify ulnar nerve at wrist, trace proximally until it separates from ulnar artery.",
-      "In-plane approach from radial-to-ulnar side.",
+      "Identify ulnar nerve beside the ulnar artery at the wrist, then trace it proximally to the mid-forearm.",
+      "In-plane or out-of-plane; choose a needle path that does not cross the ulnar artery.",
       "Hydrodissect circumferentially with 3–5 mL.",
     ],
     endpoint: "Donut sign around ulnar nerve, away from artery.",
     pearls: [
-      "Always block proximal to ulnar artery convergence to avoid intravascular injection.",
+      "Block in the mid-forearm, proximal to where the dorsal cutaneous branch leaves, so the dorsal ulnar hand is covered.",
       "Use lower volume (3–5 mL) — small target, generous spread risks median spread.",
     ],
     pitfalls: [
@@ -363,7 +372,7 @@ const BLOCKS = [
     endpoint: "LA spread under fascia iliaca, surrounding femoral nerve.",
     pearls: [
       "First-line analgesia for hip/femur fractures — reduces opioid use significantly.",
-      "Combine with fascia iliaca approach if hip — broader spread to obturator and LFCN.",
+      "Combine with fascia iliaca approach if hip — broader spread to LFCN; obturator coverage inconsistent.",
       "Excellent for elderly hip fracture patients — reduces delirium risk vs. opioids.",
     ],
     pitfalls: [
@@ -378,7 +387,7 @@ const BLOCKS = [
     region: "Lower extremity",
     indication: "Hip fracture, femur fracture (alternative/extension of femoral)",
     coverage: {
-      nerves: ["Femoral", "Lateral femoral cutaneous (LFCN)", "Obturator (often)"],
+      nerves: ["Femoral", "Lateral femoral cutaneous (LFCN)", "Obturator (inconsistent)"],
       roots: "L2–L4 — anterior + lateral thigh; variable medial thigh",
     },
     media: {
@@ -396,20 +405,20 @@ const BLOCKS = [
       "Femoral artery medially as reference",
     ],
     technique: [
-      "Supra-inguinal approach preferred (better spread to LFCN, obturator).",
+      "Supra-inguinal approach preferred (better spread to LFCN; obturator coverage still inconsistent).",
       "In-plane caudad-to-cephalad approach. Tip aimed under fascia iliaca.",
       "Pop through fascia; inject 30–40 mL — LA should dissect cephalad and medial.",
       "Hydrodissect with saline first if uncertain about plane.",
     ],
     endpoint: "Large hypoechoic spread under fascia iliaca, peeling fascia off iliacus muscle.",
     pearls: [
-      "Volume-dependent: needs 30+ mL for full hip coverage.",
+      "Volume-dependent: needs 30+ mL.",
       "Lower vascular puncture risk than femoral approach — good for anticoagulated hip fx patients.",
-      "Single injection covers femoral, LFCN, often obturator nerves.",
+      "Single injection covers femoral and LFCN; obturator coverage is inconsistent.",
     ],
     pitfalls: [
       "Failure usually due to inadequate volume or wrong plane (above fascia iliaca).",
-      "Use ideal body weight for max dose calc in elderly thin patients.",
+      "Elderly, thin patients: use actual weight, not ideal, for the max-dose calc — ideal can overstate the ceiling.",
     ],
   },
   {
@@ -537,10 +546,10 @@ const BLOCKS = [
     id: "peng",
     name: "PENG",
     region: "Lower extremity",
-    indication: "Hip fracture / hip pain (motor-sparing alternative to femoral)",
+    indication: "Hip fracture / hip pain (alternative to femoral, designed to spare the quadriceps)",
     coverage: {
       nerves: ["Articular branches of femoral, obturator, accessory obturator (hip capsule sensory)"],
-      roots: "L1–L4 — anterior hip joint capsule (motor-sparing; quad strength preserved)",
+      roots: "L1–L4 — anterior hip joint capsule (sensory target; designed to spare quad motor)",
     },
     media: {
       anatomy: null,
@@ -566,7 +575,7 @@ const BLOCKS = [
     ],
     endpoint: "Spread between psoas tendon and pubic ramus, capturing articular branches of femoral, obturator, accessory obturator.",
     pearls: [
-      "Motor-sparing — preserves quad strength, lower fall risk than femoral.",
+      "Designed to spare the quadriceps, though weakness still happens.",
       "Best for hip fracture, especially geriatric — combines well with fascia iliaca if posterior coverage needed.",
       "Targets sensory articular branches of the hip joint capsule.",
     ],
@@ -802,6 +811,9 @@ function LACalculator({ defaultAgentId, typicalVolMl }) {
                 style={{ border: `1px solid ${RULE}` }}
               />
             </div>
+            <div className="text-[11px] mt-1" style={{ color: MUTED }}>
+              {DOSING_WEIGHT_HINT}
+            </div>
           </div>
 
           {/* Agent */}
@@ -902,8 +914,8 @@ function LACalculator({ defaultAgentId, typicalVolMl }) {
           </div>
 
           <div className="text-[11px]" style={{ color: MUTED }}>
-            Use ideal/lean body weight in obese patients. Caps from package inserts; clinical practice often uses lower
-            ceilings, especially in elderly/cachectic patients. Always aspirate; inject in aliquots.
+            Caps from package inserts; clinical practice often uses lower ceilings, especially in
+            elderly/cachectic patients. Always aspirate; inject in aliquots.
           </div>
         </div>
       )}
@@ -1309,9 +1321,14 @@ function TldrCell({ label, value }) {
 // ─── LAST Page ──────────────────────────────────────────────────────────────
 function LastPage({ onBack }) {
   const [weight, setWeight] = useState(70);
-  const bolusMl = (1.5 * weight).toFixed(0);
-  const infusionMlPerMin = (0.25 * weight).toFixed(1);
-  const max30minMl = (12 * weight).toFixed(0);
+  // ASRA LAST checklist 2020 (v1.1): over 70 kg, ~100 mL over 2–3 min, then ~250 mL over 15–20 min;
+  // under 70 kg, ~1.5 mL/kg over 2–3 min, then ~0.25 mL/kg/min. The weight is ideal body weight, the
+  // owner's choice (2026-11-15), because the checklist names none. The checklist says only over and
+  // under 70 kg, so exactly 70 kg takes the per-kg doses.
+  const over70 = weight > 70;
+  const bolusMl = over70 ? "~100" : (1.5 * weight).toFixed(0);
+  const infusion = over70 ? "~250 mL" : `${(0.25 * weight).toFixed(1)} mL/min`;
+  const maxMl = (12 * weight).toFixed(0);
 
   return (
     <div className="page-enter-forward" style={{ minHeight: "100vh", background: "#fff" }}>
@@ -1335,7 +1352,7 @@ function LastPage({ onBack }) {
           <div className="flex-1">
             <div className="font-display font-bold text-lg">LAST</div>
             <div className="text-[11px] uppercase tracking-wider">
-              Local anesthetic systemic toxicity · ASRA 2020/21
+              Local anesthetic systemic toxicity · ASRA
             </div>
           </div>
           <AlertTriangle size={22} />
@@ -1392,7 +1409,7 @@ function LastPage({ onBack }) {
             </li>
             <li>
               <strong>Cardiac arrest → modified ACLS:</strong> epinephrine in <em>reduced</em> doses
-              (≤1 mcg/kg boluses); <strong>avoid</strong> vasopressin, calcium-channel blockers, beta
+              (start with ≤1 mcg/kg); <strong>avoid</strong> vasopressin, calcium-channel blockers, beta
               blockers, lidocaine, procainamide.
             </li>
             <li>
@@ -1415,7 +1432,7 @@ function LastPage({ onBack }) {
             style={{ background: `${DANGER}08`, border: `1px solid ${DANGER}44` }}
           >
             <label className="text-xs font-semibold uppercase tracking-wider" style={{ color: MUTED }}>
-              Lean / ideal body weight (kg)
+              Ideal body weight (kg)
             </label>
             <div className="flex items-center gap-3 mt-1">
               <input
@@ -1435,27 +1452,38 @@ function LastPage({ onBack }) {
                 style={{ border: `1px solid ${RULE}` }}
               />
             </div>
+            <div className="text-[11px] mt-1" style={{ color: MUTED }}>
+              {LIPID_WEIGHT_HINT}
+            </div>
 
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
               <LastDoseCell
                 label="Bolus"
                 value={`${bolusMl} mL`}
-                detail="1.5 mL/kg over 2–3 min · repeat up to 2× if persistent CV collapse"
+                detail={
+                  over70
+                    ? "~100 mL over 2–3 min (fixed, over 70 kg) · repeat if still unstable"
+                    : "~1.5 mL/kg over 2–3 min · repeat if still unstable"
+                }
               />
               <LastDoseCell
-                label="Infusion"
-                value={`${infusionMlPerMin} mL/min`}
-                detail="0.25 mL/kg/min · double if BP remains low"
+                label={over70 ? "Infusion over 15–20 min" : "Infusion"}
+                value={infusion}
+                detail={
+                  over70
+                    ? "~250 mL over 15–20 min (fixed, over 70 kg) · double the rate if still unstable"
+                    : `~0.25 mL/kg/min · double the rate if still unstable${weight < 40 ? " · consider a pump under 40 kg" : ""}`
+                }
               />
               <LastDoseCell
-                label="30-min max"
-                value={`${max30minMl} mL`}
-                detail="12 mL/kg ceiling in first 30 min"
+                label="Maximum"
+                value={`${maxMl} mL`}
+                detail="Maximum lipid dose: 12 mL/kg"
               />
             </div>
 
             <div className="text-[11px] mt-3" style={{ color: MUTED }}>
-              Continue infusion 10 min beyond hemodynamic stability. Bolus is over 2–3 min — do not push.
+              Continue the infusion at least 15 min after hemodynamic stability. Bolus is over 2–3 min — do not push.
             </div>
           </div>
         </section>
@@ -1475,7 +1503,10 @@ function LastPage({ onBack }) {
         </section>
 
         <div className="text-[11px] pt-4" style={{ color: MUTED }}>
-          Source: ASRA Practice Advisory on Local Anesthetic Systemic Toxicity (2020 / 2021 update).
+          Source: ASRA practice advisory on LAST (executive summary 2017); lipid dosing follows the ASRA LAST
+          checklist, 2020 (v1.1). The checklist names no weight basis; every lipid figure here uses ideal
+          body weight (the 2017 checklist put it on the infusion only). The checklist says only over and
+          under 70 kg; exactly 70 kg uses the per-kg doses.
           For reference only — defer to institutional protocols and current ASRA guidance.
         </div>
       </main>
