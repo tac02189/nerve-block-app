@@ -32,7 +32,20 @@ To add a new block: append an entry to `BLOCKS` with the appropriate `region`, d
 
 `LA_AGENTS` reflects ASRA / NYSORA reference values. If you change mg/kg or caps, update the LAST page wording too if needed.
 
-Weight guidance lives in one string, `DOSING_WEIGHT_HINT` (actual body weight, or lean/ideal body weight if obese), shown under both the LA calculator and the LAST lipid calculator. Change it there, not per page. Do not tell users to dose a thin patient on ideal body weight: in a thin or frail patient ideal weight can exceed actual weight and overstate the ceiling. The LAST page follows the ASRA LAST checklist 2020 (v1.1), which names no weight basis and gives fixed lipid volumes over 70 kg.
+Weight guidance lives in two strings, and they differ on purpose. Change each in its string, not per page.
+
+- **`DOSING_WEIGHT_HINT`** sits under the LA max-dose calculator: actual body weight, or lean/ideal body weight if obese. Do not tell users to dose a thin patient's local anesthetic on ideal body weight. In a thin or frail patient, ideal weight can exceed actual weight and overstate the ceiling.
+- **`LIPID_WEIGHT_HINT`** sits under the LAST lipid calculator: ideal body weight, by Thiago's decision of 2026-11-15.
+  - Up to and including 70 kg, the doses are per kg.
+  - Over 70 kg, they are fixed: 100 mL over 2–3 min, then 200–250 mL over 15–20 min.
+  - The weight entered also sets the 12 mL/kg maximum.
+
+The ASRA LAST checklist 2020 (v1.1) names no weight basis and gives ~250 mL over 70 kg. The page departs from it in two ways and settles one point it leaves open, all by Thiago's choice:
+- **The 200–250 mL range** is the 2017 version's.
+- **Ideal body weight for every lipid figure** goes further than 2017, which put ideal body weight on the infusion only.
+- **Exactly 70 kg uses the per-kg doses.** The checklist says only "over" and "under" 70 kg.
+
+Do not "correct" any of them to the 2020 wording.
 
 ## Firebase Pattern
 

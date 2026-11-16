@@ -63,9 +63,13 @@ function blockCredits(block) {
 // ASRA 2020 / NYSORA reference values. mg/kg uses DOSING_WEIGHT_HINT's rule.
 // Caps from package inserts; clinically most regional services use lower caps.
 
-// One weight rule, shown under both calculators (LA max dose and lipid emulsion)
-// so the two cannot drift apart. The 2020 ASRA LAST checklist names no weight basis.
+// Two weight rules, deliberately different.
+// LA max-dose calculator: actual weight, or lean/ideal if obese. Never ideal in a thin patient,
+// whose ideal weight can exceed actual weight and overstate the ceiling.
 const DOSING_WEIGHT_HINT = "Actual body weight — or lean/ideal body weight if obese.";
+// LAST lipid calculator: ideal body weight, the owner's decision of 2026-11-15. The 2020 ASRA
+// LAST checklist names no weight basis; its 2017 version put ideal body weight on the infusion.
+const LIPID_WEIGHT_HINT = "Ideal body weight. It sets the doses, the 70-kg cutoff and the maximum.";
 
 const LA_AGENTS = [
   {
@@ -1317,10 +1321,12 @@ function TldrCell({ label, value }) {
 // ─── LAST Page ──────────────────────────────────────────────────────────────
 function LastPage({ onBack }) {
   const [weight, setWeight] = useState(70);
-  // ASRA LAST checklist 2020 (v1.1): fixed volumes over 70 kg, per-kg doses at 70 kg or less.
+  // Owner's rule (2026-11-15), weight = ideal body weight: per-kg doses up to and including
+  // 70 kg; over 70 kg, a fixed 100 mL bolus over 2–3 min, then 200–250 mL over 15–20 min.
+  // 200–250 mL is the 2017 ASRA checklist's range (2020 v1.1 says ~250 mL), kept by his choice.
   const over70 = weight > 70;
   const bolusMl = over70 ? "100" : (1.5 * weight).toFixed(0);
-  const infusion = over70 ? "250 mL" : `${(0.25 * weight).toFixed(1)} mL/min`;
+  const infusion = over70 ? "200–250 mL" : `${(0.25 * weight).toFixed(1)} mL/min`;
   const maxMl = (12 * weight).toFixed(0);
 
   return (
@@ -1402,7 +1408,7 @@ function LastPage({ onBack }) {
             </li>
             <li>
               <strong>Cardiac arrest → modified ACLS:</strong> epinephrine in <em>reduced</em> doses
-              (≤1 mcg/kg boluses); <strong>avoid</strong> vasopressin, calcium-channel blockers, beta
+              (start with ≤1 mcg/kg); <strong>avoid</strong> vasopressin, calcium-channel blockers, beta
               blockers, lidocaine, procainamide.
             </li>
             <li>
@@ -1425,7 +1431,7 @@ function LastPage({ onBack }) {
             style={{ background: `${DANGER}08`, border: `1px solid ${DANGER}44` }}
           >
             <label className="text-xs font-semibold uppercase tracking-wider" style={{ color: MUTED }}>
-              Patient weight (kg)
+              Ideal body weight (kg)
             </label>
             <div className="flex items-center gap-3 mt-1">
               <input
@@ -1446,7 +1452,7 @@ function LastPage({ onBack }) {
               />
             </div>
             <div className="text-[11px] mt-1" style={{ color: MUTED }}>
-              {DOSING_WEIGHT_HINT}
+              {LIPID_WEIGHT_HINT}
             </div>
 
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -1455,7 +1461,7 @@ function LastPage({ onBack }) {
                 value={`${bolusMl} mL`}
                 detail={
                   over70
-                    ? "~100 mL over 2–3 min (fixed, over 70 kg) · repeat if still unstable"
+                    ? "100 mL over 2–3 min (fixed, over 70 kg) · repeat if still unstable"
                     : "1.5 mL/kg over 2–3 min · repeat if still unstable"
                 }
               />
@@ -1464,7 +1470,7 @@ function LastPage({ onBack }) {
                 value={infusion}
                 detail={
                   over70
-                    ? "~250 mL over 15–20 min (fixed, over 70 kg) · double the rate if still unstable"
+                    ? "200–250 mL over 15–20 min (fixed, over 70 kg) · double the rate if still unstable"
                     : `0.25 mL/kg/min · double the rate if still unstable${weight < 40 ? " · consider a pump under 40 kg" : ""}`
                 }
               />
@@ -1497,7 +1503,9 @@ function LastPage({ onBack }) {
 
         <div className="text-[11px] pt-4" style={{ color: MUTED }}>
           Source: ASRA practice advisory on LAST (executive summary 2017); lipid dosing follows the ASRA LAST
-          checklist, 2020 (v1.1).
+          checklist, 2020 (v1.1), with two exceptions. Every lipid figure uses ideal body weight (the 2017
+          checklist put it on the infusion only), and the infusion over 70 kg is the 2017 range of 200–250 mL
+          (2020: ~250 mL). The checklist says only over and under 70 kg; exactly 70 kg uses the per-kg doses.
           For reference only — defer to institutional protocols and current ASRA guidance.
         </div>
       </main>
