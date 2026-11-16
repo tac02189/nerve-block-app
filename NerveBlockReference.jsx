@@ -1321,12 +1321,13 @@ function TldrCell({ label, value }) {
 // ─── LAST Page ──────────────────────────────────────────────────────────────
 function LastPage({ onBack }) {
   const [weight, setWeight] = useState(70);
-  // Owner's rule (2026-11-15), weight = ideal body weight: per-kg doses up to and including
-  // 70 kg; over 70 kg, a fixed 100 mL bolus over 2–3 min, then 200–250 mL over 15–20 min.
-  // 200–250 mL is the 2017 ASRA checklist's range (2020 v1.1 says ~250 mL), kept by his choice.
+  // ASRA LAST checklist 2020 (v1.1): over 70 kg, ~100 mL over 2–3 min, then ~250 mL over 15–20 min;
+  // under 70 kg, ~1.5 mL/kg over 2–3 min, then ~0.25 mL/kg/min. The weight is ideal body weight, the
+  // owner's choice (2026-11-15), because the checklist names none. The checklist says only over and
+  // under 70 kg, so exactly 70 kg takes the per-kg doses.
   const over70 = weight > 70;
-  const bolusMl = over70 ? "100" : (1.5 * weight).toFixed(0);
-  const infusion = over70 ? "200–250 mL" : `${(0.25 * weight).toFixed(1)} mL/min`;
+  const bolusMl = over70 ? "~100" : (1.5 * weight).toFixed(0);
+  const infusion = over70 ? "~250 mL" : `${(0.25 * weight).toFixed(1)} mL/min`;
   const maxMl = (12 * weight).toFixed(0);
 
   return (
@@ -1461,8 +1462,8 @@ function LastPage({ onBack }) {
                 value={`${bolusMl} mL`}
                 detail={
                   over70
-                    ? "100 mL over 2–3 min (fixed, over 70 kg) · repeat if still unstable"
-                    : "1.5 mL/kg over 2–3 min · repeat if still unstable"
+                    ? "~100 mL over 2–3 min (fixed, over 70 kg) · repeat if still unstable"
+                    : "~1.5 mL/kg over 2–3 min · repeat if still unstable"
                 }
               />
               <LastDoseCell
@@ -1470,8 +1471,8 @@ function LastPage({ onBack }) {
                 value={infusion}
                 detail={
                   over70
-                    ? "200–250 mL over 15–20 min (fixed, over 70 kg) · double the rate if still unstable"
-                    : `0.25 mL/kg/min · double the rate if still unstable${weight < 40 ? " · consider a pump under 40 kg" : ""}`
+                    ? "~250 mL over 15–20 min (fixed, over 70 kg) · double the rate if still unstable"
+                    : `~0.25 mL/kg/min · double the rate if still unstable${weight < 40 ? " · consider a pump under 40 kg" : ""}`
                 }
               />
               <LastDoseCell
@@ -1503,9 +1504,9 @@ function LastPage({ onBack }) {
 
         <div className="text-[11px] pt-4" style={{ color: MUTED }}>
           Source: ASRA practice advisory on LAST (executive summary 2017); lipid dosing follows the ASRA LAST
-          checklist, 2020 (v1.1), with two exceptions. Every lipid figure uses ideal body weight (the 2017
-          checklist put it on the infusion only), and the infusion over 70 kg is the 2017 range of 200–250 mL
-          (2020: ~250 mL). The checklist says only over and under 70 kg; exactly 70 kg uses the per-kg doses.
+          checklist, 2020 (v1.1). The checklist names no weight basis; every lipid figure here uses ideal
+          body weight (the 2017 checklist put it on the infusion only). The checklist says only over and
+          under 70 kg; exactly 70 kg uses the per-kg doses.
           For reference only — defer to institutional protocols and current ASRA guidance.
         </div>
       </main>
