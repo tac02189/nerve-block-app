@@ -40,7 +40,7 @@ Weight guidance lives in two strings, and they differ on purpose. Change each in
   - Over 70 kg, they are fixed: ~100 mL over 2–3 min, then ~250 mL over 15–20 min.
   - The weight entered also sets the 12 mL/kg maximum.
 
-The lipid numbers follow the ASRA LAST checklist 2020 (v1.1), at Thiago's word. Do not swap in an older version's numbers. The 2017 checklist's "200–250 mL" was on this branch briefly, because his first instruction quoted that version; he meant the current one.
+The lipid numbers follow the ASRA LAST checklist 2020 (v1.1), at Thiago's word. Do not swap in an older version's numbers. If numbers he gives match an older version, ask which version he means before applying them: his first instruction for these doses quoted the 2017 checklist's "200–250 mL", and he meant the current one.
 
 The checklist leaves two things open, and the page settles both by Thiago's choice:
 - **Ideal body weight for every lipid figure.** The checklist names no weight basis. Its 2017 version put ideal body weight on the infusion only.
@@ -60,7 +60,7 @@ Then import into components from `./firebase.js`. Never re-initialize the app.
 ## Git & GitHub Workflow
 
 Repo: `https://github.com/tac02189/nerve-block-app`
-Branch: `master` (per global CLAUDE.md, commit directly to master for normal work)
+Branch: `master` (per the root `CLAUDE.md`, commit directly to master for normal work)
 
 **Proactively commit and push at major milestones** — new feature, new block added, content correction, deploy, etc.
 
@@ -70,7 +70,7 @@ Branch: `master` (per global CLAUDE.md, commit directly to master for normal wor
 npm run deploy
 ```
 
-Builds with Vite, then `firebase deploy --only hosting`. Live URL pattern: `https://mizzou-nerve-blocks.web.app`.
+Builds with Vite, then `firebase deploy --only hosting`. Live URL: `https://mizzou-nerve-blocks.web.app`.
 
 `firebase.json` rewrites all routes → `index.html` (SPA).
 
