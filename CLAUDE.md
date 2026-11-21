@@ -84,4 +84,4 @@ Builds with Vite, then `firebase deploy --only hosting`. Live URL: `https://mizz
 
 ## Content Source
 
-Initial draft content for all 13 blocks pulled from standard EM/regional refs (NYSORA, ASRA, EM:RAP/Highland) — every dose and volume needs Thiago's final review before public deploy. Note any disputed values in commit messages.
+Initial draft content for all 13 blocks was pulled from standard EM/regional refs (NYSORA, ASRA, EM:RAP/Highland), and every dose and volume needed Thiago's final review before public deploy. The app is now public (live URL above). Any change to a dose or volume needs his review against a source before it is deployed; whether every value already live has had that review is his to say, so do not assume it. Note any disputed values in commit messages.
